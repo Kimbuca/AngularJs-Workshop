@@ -10,12 +10,75 @@
 	<script src="app.controller.js"></script>
 	<title>AngularJs Workshop</title>
 </head>
-<body>
+<body ng-app="myApp">
+
 	<!-- content goes here! -->
+	<div class="container-fluid" ng-controller="ListController as listCtrl">
+		<div class="row">
+			
+			<div class="col-md-2">
+				<!-- Searchbar-->
+				<h3>Searchbar</h3>
+				<input type="text" class="form-control" ng-model="listCtrl.query"/>
+				<!--{{listCtrl.query}}-->
+
+			</div>
+
+			<div class="col-md-4">
+				<!-- List -->
+				<div class="list-group">
+					<a href="" class="list-group-item" ng-repeat="phone in listCtrl.phones | filter: listCtrl.query" ng-click="listCtrl.setSelect(phone.id, phone.age)" ng-class="{'active': listCtrl.isSelected(phone.id)}">	
+					<h4 class="list-group-item-heading">{{phone.name}}</h4>
+					<p class="list-group-item-text">{{phone.snippet}}</p>
+					</a>
+				</div>
+			</div>
+
+			<div class="col-md-6">
+
+				<!-- Detail -->
+				<img src="{{listCtrl.phones[listCtrl.index].imageUrl}}" class="img-thumbnail" width="304" height="236"/>
+				<h1>{{listCtrl.phones[listCtrl.index].name}}</h1>
+				<h4>{{listCtrl.phones[listCtrl.index].snippet}}</h4>
+				<span>{{listCtrl.phones[listCtrl.index].carrier}}</span>
+
+
+				<h3>Review Section</h3>
+				<blockquote ng-repeat="review in listCtrl.phones[listCtrl.index].reviews">
+					{{review.body}}
+					<footer class="blockquote-footer"><cite>{{review.author}}</cite></footer>
+				</blockquote>
+				
+				<form name="reviewForm" ng-controller="FormController as formCtrl" ng-submit="formCtrl.addReview(listCtrl.phones[listCtrl.index])">
+				<!-- live preview -->
+				<blockquote>
+					{{formCtrl.review.body}}
+					<footer class="blockquote-footer"><cite>{{formCtrl.review.author}}</cite></footer>
+				</blockquote>
+
+				<!-- review form -->
+					<fieldset class="form-group">
+						<textarea class="form-control" ng-model="formCtrl.review.body"></textarea>
+						<label>Author:</label>
+						<input type="email" class ="form-control" placeholder="email@.com" ng-model="formCtrl.review.author"/>
+					</fieldset>
+					<fieldset class="form-group">
+						<input type="submit" class="btn btn-primary pull-right" value="Submit"/>
+					</fieldset>
+				</form>
+
+
+				
+			</div>
+
+
+		</div>
+	</div>
+	
 
 
 </body>
-	<!--necesary for bootstraps js plugins -->
-	<script src="dist/jquery/jquery.min.js"></script>
+  <!--necesary for bootstraps js plugins -->
+  <script src="dist/jquery/jquery.min.js"></script>
   <script src="dist/bootstrap/js/bootstrap.min.js"></script>
 </html>
